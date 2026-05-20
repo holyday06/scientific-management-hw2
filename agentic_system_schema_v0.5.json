@@ -1,0 +1,181 @@
+{
+  "system_name": "Agentic Exam Generation System",
+  "version": "0.5",
+  "_repository": "https://github.com/nakyung0922/scientific-management-hw2",
+
+  "_changes_from_v0_4": [
+    "시험 기본 구성 확정 (회의 정보): 75분, 10문항, 100점",
+    "문항 분포 확정: short_answer 2 / long_answer 5 / case_analysis 3 (MCQ_single 제외)",
+    "난이도 그룹 분포: easy 2 / medium 6 / hard 2",
+    "그룹→레벨 매핑 확정: easy(L1 1+L2 1) / medium(L3 6) / hard(L4 1+L5 1)",
+    "is_emphasis_slot 필드 제거 (target_difficulty_level이 이미 직접 레벨 보유)",
+    "concept_id 네이밍 규칙 확정 (R3 답변): {module_id}_{snake_case_slug}",
+    "intrinsic_difficulty_level 산출 방법 확정 (R3 답변): 0.4·A_score + 0.6·B_score",
+    "LLM 환경 확정: Gemini Vertex AI (GCP 200달러 크레딧)"
+  ],
+
+  "global_message_schema": {
+    "_unchanged_from_v0_4": true,
+    "fields": ["message_id", "timestamp", "session_id", "source_agent", "target_agent", "payload", "routing_status"]
+  },
+
+  "shared_enums": {
+    "difficulty_level": [1, 2, 3, 4, 5],
+    "difficulty_group_mapping": {"easy": [1, 2], "medium": [3], "hard": [4, 5]},
+    "question_type": ["MCQ_single", "short_answer", "long_answer", "case_analysis"],
+    "_question_type_note": "MCQ_single은 enum 유지하되 실제 시험에 미사용 (관행 반영)",
+    "evaluation_focus": ["balanced", "knowledge_focused", "application_focused"],
+    "evaluation_focus_weights": {
+      "balanced":            {"alpha": 0.5, "beta": 0.5},
+      "knowledge_focused":   {"alpha": 0.7, "beta": 0.3},
+      "application_focused": {"alpha": 0.3, "beta": 0.7}
+    },
+    "routing_status": ["flow", "question_rework", "difficulty_correction"],
+    "verdict": ["pass", "fail"],
+    "edge_relation": ["prerequisite", "parent_of", "related"],
+    "importance": ["low", "medium", "high"],
+    "tester_name": ["Factfulness_Tester", "Difficulty_Tester"]
+  },
+
+  "concept_id_naming_rule": {
+    "_source": "R3 답변",
+    "format": "{module_id}_{snake_case_slug}",
+    "examples": ["M2_1_5_kj_method", "M3_1_1_therbligs", "manufacturing_overview"],
+    "rules": [
+      "점(.)은 언더스코어(_)로 변환",
+      "영문 소문자 + 숫자 + _만 허용 (단 module prefix의 M은 대문자 허용)",
+      "slug 최대 4단어",
+      "동의어 있을 때 가장 보편적 용어 채택",
+      "충돌 시 _v2 추가"
+    ]
+  },
+
+  "intrinsic_difficulty_level_computation": {
+    "_source": "R3 답변",
+    "formula": "round(0.4 · A_score + 0.6 · B_score)",
+    "A_score": {
+      "description": "그래프 위치 기반 (정량)",
+      "formula": "0.5·norm(in_degree)·5 + 0.3·norm(out_degree)·5 + 0.2·norm(depth)·5"
+    },
+    "B_score": {
+      "description": "LLM rubric 분류 (정성, 1~5 직접 반환)",
+      "rubric": {
+        "1": "단순 기억/인식",
+        "2": "이해/기본 분류",
+        "3": "적용/절차적 분석",
+        "4": "분석/구조화",
+        "5": "평가/종합 설계"
+      },
+      "_llm_setting": "temperature=0, few-shot 5개"
+    }
+  },
+
+  "difficulty_formula": {
+    "formula": "D = α · X₁ + β · X₂",
+    "X1_depth_mapping": {"0": 0.00, "1": 0.25, "2": 0.50, "3": 0.75, "≥4": 1.00},
+    "X2_type_mapping": {
+      "MCQ_single": 0.2,
+      "short_answer": 0.4,
+      "long_answer": 0.7,
+      "case_analysis": 1.0
+    },
+    "level_thresholds": {
+      "L1": [0.00, 0.20],
+      "L2": [0.20, 0.40],
+      "L3": [0.40, 0.60],
+      "L4": [0.60, 0.80],
+      "L5": [0.80, 1.00]
+    }
+  },
+
+  "question_type_level_constraints": {
+    "short_answer":  {"min": 1, "max": 4, "rationale": "X₂=0.4 → L5 진입 불가능"},
+    "long_answer":   {"min": 2, "max": 5, "rationale": "표준 서술형 범위"},
+    "case_analysis": {"min": 3, "max": 5, "rationale": "X₂=1.0 → L1·L2 진입 불가능"}
+  },
+
+  "schemas": {
+    "_note": "is_emphasis_slot 제거. Python Pydantic 모델은 common/schemas.py 참조."
+  },
+
+  "feedback_loops": {
+    "Question_Rework": {
+      "trigger": "Factfulness_Tester verdict == 'fail'",
+      "source": "Factfulness_Tester",
+      "target": "QA_Generator",
+      "max_retries": 3,
+      "on_exceed": "warnings 기록 후 통과"
+    },
+    "Difficulty_Correction": {
+      "trigger": "Difficulty_Tester가 후속 슬롯 target_difficulty_level 조정 필요 판단",
+      "source": "Difficulty_Tester",
+      "target": "Exam_Planner",
+      "_note": "이미 생성된 문항 재작업 안 함"
+    }
+  },
+
+  "config_defaults": {
+    "exam_basics": {
+      "total_points": 100,
+      "duration_minutes": 75,
+      "exam_type": "midterm",
+      "evaluation_focus": "balanced"
+    },
+    "question_count": {
+      "short_answer": 2,
+      "long_answer": 5,
+      "case_analysis": 3,
+      "total": 10
+    },
+    "points_per_type": {
+      "short_answer": 10,
+      "long_answer": 12,
+      "case_analysis": 7
+    },
+    "difficulty_distribution_group": {"easy": 2, "medium": 6, "hard": 2},
+    "group_to_level_mapping": {
+      "easy":   {"L1": 1, "L2": 1},
+      "medium": {"L3": 6},
+      "hard":   {"L4": 1, "L5": 1}
+    },
+    "baseline_level": 3,
+    "thresholds": {
+      "factfulness_pass": 0.80,
+      "difficulty_alignment_pass": 0.60,
+      "max_question_rework_attempts": 3
+    },
+    "output_format": "both",
+    "target_chapters": [
+      "M1_1", "M1_2", "M1_3", "M1_4", "M1_5",
+      "M2_1_1", "M2_1_2", "M2_1_3", "M2_1_5",
+      "M3_1_1", "manufacturing_overview"
+    ],
+    "llm_config": {
+      "provider": "google_vertex_ai",
+      "models": {"heavy": "gemini-2.5-pro", "light": "gemini-2.5-flash"},
+      "agent_model_assignment": {
+        "Exam_Planner": "heavy",
+        "QA_Generator_heavy": "heavy",
+        "QA_Generator_light": "light",
+        "Factfulness_Tester": "heavy",
+        "Difficulty_Tester": "heavy",
+        "Rubric_Machine": "light",
+        "Paper_Formattor": "light"
+      }
+    }
+  },
+
+  "loa_summary": {
+    "_source": "R1 정의 (변경 없음)",
+    "Material_Collector": 2,
+    "Req_Parser": 8,
+    "Topic_Analyzer": 7,
+    "Topic_Prioritizer": 7,
+    "Exam_Planner": 8,
+    "QA_Generator": 7,
+    "Factfulness_Tester": 8,
+    "Difficulty_Tester": 8,
+    "Rubric_Machine": 6,
+    "Paper_Formattor": 7
+  }
+}

@@ -1,0 +1,20 @@
+# LLM
+google-cloud-aiplatform>=1.71.0
+google-genai>=0.3.0
+
+# Data modeling
+pydantic>=2.0.0
+
+# Document generation (Paper Formattor)
+python-docx>=1.1.0
+reportlab>=4.0.0  # PDF 변환
+
+# PDF reading (Material Collector - PG1 영역이지만 공유 가능)
+pypdf>=4.0.0
+
+# Utilities
+python-dotenv>=1.0.0
+
+# Testing
+pytest>=7.4.0
+pytest-mock>=3.12.0

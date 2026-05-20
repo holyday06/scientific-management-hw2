@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+
+# Environment
+.env
+*.key
+*-key.json
+service-account*.json
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Outputs
+outputs/
+generated_papers/
+*.docx
+*.pdf
+!docs/*.pdf
+!docs/*.docx
+
+# Logs
+*.log
+logs/
+
+# Cache
+.cache/
