@@ -151,8 +151,8 @@ def level_to_d_range(level: DifficultyLevel) -> tuple[float, float]:
 # 유형-레벨 제약
 # ────────────────────────────────────────────────────────────
 def is_valid_type_level_combo(
-    question_type: QuestionType,
-    level: DifficultyLevel,
+    question_type: QuestionType | str,
+    level: DifficultyLevel | int,
 ) -> bool:
     """문항 유형과 난이도 레벨의 조합이 허용되는지 검증.
 
@@ -165,9 +165,13 @@ def is_valid_type_level_combo(
     False
     >>> is_valid_type_level_combo(QuestionType.LONG_ANSWER, DifficultyLevel.L3)
     True
+    >>> is_valid_type_level_combo("long_answer", 3)
+    True
     """
-    min_level, max_level = QUESTION_TYPE_LEVEL_RANGE[question_type.value]
-    return min_level <= int(level) <= max_level
+    qtype_val = question_type.value if hasattr(question_type, "value") else question_type
+    level_int = int(level)
+    min_level, max_level = QUESTION_TYPE_LEVEL_RANGE[qtype_val]
+    return min_level <= level_int <= max_level
 
 
 def allowed_levels_for_type(question_type: QuestionType) -> list[DifficultyLevel]:

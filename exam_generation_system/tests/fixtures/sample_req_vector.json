@@ -1,0 +1,29 @@
+{
+  "exam_title": "2026-1 Scientific Management 중간고사",
+  "exam_type": "midterm",
+  "target_chapters_or_concepts": [
+    "M1_1_work_definition",
+    "M1_3_work_system",
+    "M1_4_taylor_principles",
+    "M2_1_1_dassi",
+    "M2_1_2_kj_method",
+    "M3_1_1_therbligs"
+  ],
+  "total_points": 100,
+  "duration_minutes": 75,
+  "evaluation_focus": "balanced",
+  "difficulty_distribution_group": {
+    "easy": 2,
+    "medium": 6,
+    "hard": 2
+  },
+  "question_type_distribution": {
+    "MCQ_single": 0,
+    "short_answer": 2,
+    "long_answer": 5,
+    "case_analysis": 3
+  },
+  "allowed_formats": ["docx", "pdf"],
+  "special_instructions": null,
+  "warnings": []
+}

@@ -149,6 +149,30 @@ TARGET_CHAPTERS: Final[list[str]] = [
     "M3_1_1", "manufacturing_overview",
 ]
 
+EXAM_SCOPE_MODULES: Final[list[str]] = TARGET_CHAPTERS
+
+
+# ────────────────────────────────────────────────────────────
+# Paper Formattor 메타데이터
+# ────────────────────────────────────────────────────────────
+EXAM_METADATA: Final[dict] = {
+    "course_name_kr": "과학적 관리",
+    "course_name_en": "Scientific Management",
+    "semester": "2026-1",
+    "total_points": 100,
+    "duration_minutes": 75,
+    "total_questions": 10,
+}
+
+EXAM_INSTRUCTIONS_KR: Final[list[str]] = [
+    "시험 시간은 75분이며, 총 10문항 100점 만점입니다.",
+    "답안은 제공된 답안 공간에 명확히 작성하십시오.",
+    "단답형 2문항, 서술형 5문항, 사례 분석 3문항으로 구성됩니다.",
+    "필기구는 검정 또는 파란색 펜만 사용 가능합니다.",
+]
+
+OUTPUT_DIR_TEMPLATE: Final[str] = "outputs/{session_id}"
+
 
 # ────────────────────────────────────────────────────────────
 # LLM 설정 (Gemini Vertex AI)

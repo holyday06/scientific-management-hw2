@@ -91,10 +91,16 @@ class TesterName(str, Enum):
 
 
 class EdgeRelation(str, Enum):
-    """concept_knowledge_structure의 edge 종류."""
-    PREREQUISITE = "prerequisite"
-    PARENT_OF = "parent_of"
-    RELATED = "related"
+    """concept_knowledge_structure의 edge 종류.
+
+    R3 답변: 단방향 edge 한 쌍으로 양방향 관계를 표현.
+    예) A가 B의 상위 개념: parent_of(A→B), child_of(B→A) 두 edge 동시 생성.
+    """
+    PREREQUISITE = "prerequisite"     # A→B: A를 먼저 알아야 B 학습 가능
+    DEPENDS_ON = "depends_on"         # A→B: A가 B의 후속 (prerequisite의 역방향)
+    PARENT_OF = "parent_of"           # A→B: A가 B의 상위
+    CHILD_OF = "child_of"             # A→B: A가 B의 하위 (parent_of의 역방향)
+    RELATED = "related"               # 양방향 (역방향 별도 X)
 
 
 class Importance(str, Enum):

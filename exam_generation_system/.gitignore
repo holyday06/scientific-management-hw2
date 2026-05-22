@@ -24,8 +24,9 @@ service-account*.json
 Thumbs.db
 
 # Outputs
-outputs/
+outputs/*/
 generated_papers/
+!outputs/.gitkeep
 *.docx
 *.pdf
 !docs/*.pdf

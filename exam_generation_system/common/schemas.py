@@ -310,7 +310,7 @@ class TesterOutput(StrictBase):
     estimated_D: Optional[float] = Field(default=None, ge=0.0, le=1.0)
 
     reasons: list[str] = Field(default_factory=list)
-    next_action: NextAction
+    next_action: Optional[NextAction] = None
 
 
 # ────────────────────────────────────────────────────────────
@@ -326,6 +326,8 @@ class RubricCriterion(StrictBase):
     description: str
     linked_answer_step: Optional[str] = None
     points: int = Field(gt=0)
+    key_points: list[str] = Field(default_factory=list)
+    partial_credit_guide: str = ""
     partial_credit: list[PartialCredit] = Field(default_factory=list)
 
 

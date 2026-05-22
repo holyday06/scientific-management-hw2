@@ -1,0 +1,126 @@
+{
+  "nodes": [
+    {
+      "concept_id": "ROOT_DOCUMENT",
+      "concept_name": "(root)",
+      "depth_in_tree": 0,
+      "parent_concept_id": null,
+      "importance": "low",
+      "intrinsic_difficulty_level": 1,
+      "suitable_question_types": [],
+      "source_pages": []
+    },
+    {
+      "concept_id": "M1_1_work_definition",
+      "concept_name": "작업의 정의",
+      "depth_in_tree": 1,
+      "parent_concept_id": "ROOT_DOCUMENT",
+      "importance": "medium",
+      "intrinsic_difficulty_level": 1,
+      "suitable_question_types": ["short_answer", "long_answer"],
+      "source_pages": ["M1.1 p.2"]
+    },
+    {
+      "concept_id": "M1_3_work_system",
+      "concept_name": "Work System 5가지 특징",
+      "depth_in_tree": 1,
+      "parent_concept_id": "ROOT_DOCUMENT",
+      "importance": "high",
+      "intrinsic_difficulty_level": 2,
+      "suitable_question_types": ["short_answer", "long_answer"],
+      "source_pages": ["M1.3 p.4"]
+    },
+    {
+      "concept_id": "M1_4_taylor_principles",
+      "concept_name": "Taylor의 과학적 관리 4원칙",
+      "depth_in_tree": 1,
+      "parent_concept_id": "ROOT_DOCUMENT",
+      "importance": "high",
+      "intrinsic_difficulty_level": 3,
+      "suitable_question_types": ["long_answer", "case_analysis"],
+      "source_pages": ["M1.4 p.3"]
+    },
+    {
+      "concept_id": "M1_4_pig_iron_case",
+      "concept_name": "Pig Iron Case",
+      "depth_in_tree": 2,
+      "parent_concept_id": "M1_4_taylor_principles",
+      "importance": "medium",
+      "intrinsic_difficulty_level": 2,
+      "suitable_question_types": ["short_answer", "case_analysis"],
+      "source_pages": ["M1.4 p.4"]
+    },
+    {
+      "concept_id": "M2_1_1_dassi",
+      "concept_name": "DASSI 5단계 문제 해결",
+      "depth_in_tree": 1,
+      "parent_concept_id": "ROOT_DOCUMENT",
+      "importance": "high",
+      "intrinsic_difficulty_level": 3,
+      "suitable_question_types": ["long_answer", "case_analysis"],
+      "source_pages": ["M2.1.1 p.2"]
+    },
+    {
+      "concept_id": "M2_1_2_kj_method",
+      "concept_name": "KJ Method",
+      "depth_in_tree": 1,
+      "parent_concept_id": "ROOT_DOCUMENT",
+      "importance": "high",
+      "intrinsic_difficulty_level": 3,
+      "suitable_question_types": ["long_answer", "case_analysis"],
+      "source_pages": ["M2.1.2 p.2"]
+    },
+    {
+      "concept_id": "M2_1_3_brainstorming",
+      "concept_name": "Brainstorming",
+      "depth_in_tree": 1,
+      "parent_concept_id": "ROOT_DOCUMENT",
+      "importance": "medium",
+      "intrinsic_difficulty_level": 2,
+      "suitable_question_types": ["short_answer", "long_answer"],
+      "source_pages": ["M2.1.3 p.2"]
+    },
+    {
+      "concept_id": "M3_1_1_therbligs",
+      "concept_name": "Therbligs 17개 동작 분류",
+      "depth_in_tree": 1,
+      "parent_concept_id": "ROOT_DOCUMENT",
+      "importance": "high",
+      "intrinsic_difficulty_level": 2,
+      "suitable_question_types": ["short_answer", "long_answer", "case_analysis"],
+      "source_pages": ["M3.1.1 p.2"]
+    },
+    {
+      "concept_id": "M3_1_1_motion_economy",
+      "concept_name": "동작 경제의 원칙",
+      "depth_in_tree": 2,
+      "parent_concept_id": "M3_1_1_therbligs",
+      "importance": "medium",
+      "intrinsic_difficulty_level": 3,
+      "suitable_question_types": ["long_answer", "case_analysis"],
+      "source_pages": ["M3.1.1 p.3"]
+    }
+  ],
+  "edges": [
+    {"from_concept_id": "ROOT_DOCUMENT", "to_concept_id": "M1_1_work_definition", "relation": "parent_of", "weight": 1.0},
+    {"from_concept_id": "M1_1_work_definition", "to_concept_id": "ROOT_DOCUMENT", "relation": "child_of", "weight": 1.0},
+    {"from_concept_id": "ROOT_DOCUMENT", "to_concept_id": "M1_3_work_system", "relation": "parent_of", "weight": 1.0},
+    {"from_concept_id": "M1_3_work_system", "to_concept_id": "ROOT_DOCUMENT", "relation": "child_of", "weight": 1.0},
+    {"from_concept_id": "ROOT_DOCUMENT", "to_concept_id": "M1_4_taylor_principles", "relation": "parent_of", "weight": 1.0},
+    {"from_concept_id": "M1_4_taylor_principles", "to_concept_id": "ROOT_DOCUMENT", "relation": "child_of", "weight": 1.0},
+    {"from_concept_id": "M1_4_taylor_principles", "to_concept_id": "M1_4_pig_iron_case", "relation": "parent_of", "weight": 1.0},
+    {"from_concept_id": "M1_4_pig_iron_case", "to_concept_id": "M1_4_taylor_principles", "relation": "child_of", "weight": 1.0},
+    {"from_concept_id": "ROOT_DOCUMENT", "to_concept_id": "M2_1_1_dassi", "relation": "parent_of", "weight": 1.0},
+    {"from_concept_id": "M2_1_1_dassi", "to_concept_id": "ROOT_DOCUMENT", "relation": "child_of", "weight": 1.0},
+    {"from_concept_id": "ROOT_DOCUMENT", "to_concept_id": "M2_1_2_kj_method", "relation": "parent_of", "weight": 1.0},
+    {"from_concept_id": "M2_1_2_kj_method", "to_concept_id": "ROOT_DOCUMENT", "relation": "child_of", "weight": 1.0},
+    {"from_concept_id": "ROOT_DOCUMENT", "to_concept_id": "M2_1_3_brainstorming", "relation": "parent_of", "weight": 1.0},
+    {"from_concept_id": "M2_1_3_brainstorming", "to_concept_id": "ROOT_DOCUMENT", "relation": "child_of", "weight": 1.0},
+    {"from_concept_id": "M2_1_1_dassi", "to_concept_id": "M2_1_2_kj_method", "relation": "related", "weight": 0.8},
+    {"from_concept_id": "M2_1_1_dassi", "to_concept_id": "M2_1_3_brainstorming", "relation": "related", "weight": 0.8},
+    {"from_concept_id": "ROOT_DOCUMENT", "to_concept_id": "M3_1_1_therbligs", "relation": "parent_of", "weight": 1.0},
+    {"from_concept_id": "M3_1_1_therbligs", "to_concept_id": "ROOT_DOCUMENT", "relation": "child_of", "weight": 1.0},
+    {"from_concept_id": "M3_1_1_therbligs", "to_concept_id": "M3_1_1_motion_economy", "relation": "parent_of", "weight": 1.0},
+    {"from_concept_id": "M3_1_1_motion_economy", "to_concept_id": "M3_1_1_therbligs", "relation": "child_of", "weight": 1.0}
+  ]
+}
